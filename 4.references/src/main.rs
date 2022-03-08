@@ -13,6 +13,8 @@
 //     (s, length)
 // }
 
+// Remember, this is all so we don't have to manage memory!
+// 
 // Now run the above without transferring ownership of the value
 fn main() {
     let s1 = String::from("hello");
