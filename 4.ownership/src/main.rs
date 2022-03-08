@@ -1,3 +1,5 @@
+// The point of ownership in rust is to manage heap data :-)
+//
 fn main() {
     let _s1 = gives_ownership();         // gives_ownership moves its return
                                                  // value into s1
