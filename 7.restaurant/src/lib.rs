@@ -1,8 +1,10 @@
 mod front_of_house;
 
-pub use crate::front_of_house::hosting;
+use crate::front_of_house::hosting;
 
 mod back_of_house {
+    use crate::front_of_house;
+
     pub enum Appetizer {
         Soup,
         Salad,
@@ -10,7 +12,7 @@ mod back_of_house {
 
     pub struct Breakfast {
         pub toast: String,
-        seasonal_fruit: String, 
+        pub seasonal_fruit: String, 
     }
 
     impl Breakfast {
@@ -21,6 +23,15 @@ mod back_of_house {
             }
         }
     }
+
+    fn fix_incorrect_order() {
+        cook_order();
+        // No longer need super, moved to mod at top
+        // super::serve_order();
+        front_of_house::serving::serve_order();
+    }
+
+    fn cook_order() {}
 }
 
 // don't this we need this anymore, importing at top
@@ -36,9 +47,8 @@ pub fn eat_at_restaurant() {
     meal.toast = String::from("Wheat");
     println!("I'd like {} toast please", meal.toast);
 
-    //The next line won't compile if we uncomment it; we're not allowed
-    // to see or modify the seasonal fruit that comes with the meal
-    // meal.seasonal_fruit = String::from("blueberries");
+    meal.seasonal_fruit = String::from("blueberries");
+    println!("With my {} on the side.", meal.seasonal_fruit);
 
     let order1= back_of_house::Appetizer::Soup;
     let order2 = back_of_house::Appetizer::Salad;
