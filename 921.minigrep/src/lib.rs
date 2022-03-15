@@ -9,6 +9,9 @@ pub struct Config {
 }
 
 impl Config {
+    // The new function now returns a Result with a Config instance,
+    // or a &'static str in the error case.
+    // 
     pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
         // if args.len() < 3 {
         //     return Err("not enough arguments");

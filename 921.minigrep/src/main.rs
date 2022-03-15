@@ -4,17 +4,25 @@ use std::env;
 use std::process;
 //use std::error::Error;
 
-// minigrep is named in Cargo.toml, and Config 
-// is a struct within our program
 use minigrep::Config;
+// minigrep is named in Cargo.toml, and Config 
+// is a struct within our program library
 
 // Refactoring to use iterators instead of cloning args in lib.rs
 fn main() {
     let config = Config::new(env::args()).unwrap_or_else(|err| {
+        // 
+        // unwrap_or_else lets us define custom non-panic! error handling
+        // which allows us to provide more user friendly error messages.
+        //
         eprintln!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
 
+    // Because run returns the unit type (), we don't need to use 
+    // unwrap_or_else, so we use the "if let" structure to return 
+    // information as we only care if we error.
+    // 
     if let Err(e) = minigrep::run(config) {
         eprintln!("Application error: {}", e);
         
