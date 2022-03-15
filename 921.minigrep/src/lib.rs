@@ -18,12 +18,14 @@ impl Config {
         //     }
         // }
 
-        // Have to use clone() because new() doesn't own args, and taking
+        // To make the program simple to write on the first attempt, use clone()
+        // It's easier because new() doesn't own args, and taking
         // a slice of String elements requires ownership.
+        //
         // let query = args[1].clone();
         // let filename = args[2].clone();
 
-        // Let's rewrite the above to use iterators instead of borrowing a slice
+        // Refactor the above to use iterators instead of cloning
         // First change main.rs to pass through the original arguments not a vec
         // Then change signature to accept args from std::env::Args, adding the 
         // mut keyword so we can mutate args and iterate over it

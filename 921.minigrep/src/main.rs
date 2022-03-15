@@ -4,6 +4,8 @@ use std::env;
 use std::process;
 //use std::error::Error;
 
+// minigrep is named in Cargo.toml, and Config 
+// is a struct within our program
 use minigrep::Config;
 
 // Refactoring to use iterators instead of cloning args in lib.rs

@@ -1,3 +1,4 @@
+.DS_Store
 1.hello_world/target
 1.hello_world/Cargo.lock
 10.traits/target
@@ -36,8 +37,8 @@
 8.vectors/Cargo.lock
 9.errors/target
 9.errors/Cargo.lock
-901.generics_types/target
-901.generics_types/Cargo.lock
+901.fExtraction_generics.target
+901.fExtraction_generics/Cargo.lock
 902.traits/target
 902.traits/Cargo.lock
 903.lifetimes/target
