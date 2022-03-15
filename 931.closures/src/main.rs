@@ -1,8 +1,11 @@
-use std::collections::HashMap;
 // Functional language features: Iterators and Closures
 // 
 use std::thread;
 use std::time::Duration;
+//
+// Refactor to include multiple expensive calculation results
+use std::hash::Hash;
+use std::collections::HashMap;
 
 // Closures are anonymous functions that can capture their environment
 // and which you can store in a variable
@@ -59,37 +62,46 @@ fn generate_workout(intensity: u32, random_number: u32) {
 // Using structs to cache values from closures is called memoization or lazy
 // evaluation in other contexts
 //
-struct Cacher<T> 
+struct Cacher<T, U, V> 
 where 
-    T: Fn(u32) -> u32,      // Trait bounds specify it's a closure by using Fn
+    U: Eq + Hash + Copy, V: Clone, T: Fn(U) -> V,
 {
     calculation: T,
-    value: Option<u32>,     // Refactor to HashMap storing multiple calcs. Was:
-                            // Option, so we can grab or calculate as needed!
+    value: HashMap<U, V,>,    /*
+                            Refactor to HashMap storing multiple calcs. Was:
+                            Option, so we can grab or calculate as needed!
+                            */
 }
 
-impl<T> Cacher<T>
+impl<T, U, V> Cacher<T, U, V>
 where
-    T: Fn(u32) ->  u32,
+    U: Eq + Hash + Copy, V: Clone, T: Fn(U) ->  V,
 {
     // return new cacher instance with the closure "calculation"
-    fn new(calculation: T) -> Cacher<T> {
+    fn new(calculation: T) -> Cacher<T, U, V> {
         Cacher {
             calculation,
-            value: None,
+            value: HashMap::new(),
         }
     }
 
     // the "calling code" uses the value method, which calculates if necessary
-    fn value(&mut self, arg: u32) -> u32 {
-        match self.value {
-            Some(v) => v,
-            None => {
-                let v = (self.calculation)(arg);    // accepts user supplied val
-                self.value = Some(v);
-                v
-            }
-        }
+    //
+    // Refactor to use HashMap, and replace match with "entry...or_insert"
+    // HashMap methods for the veteran Crustacean, & more tidy syntax 
+    // 
+    fn value(&mut self, arg: U) -> V {
+        let v = self.value.entry(arg).or_insert((self.calculation)(arg));
+
+        v.clone()
+        //match self.value {
+        //    Some(v) => v,
+        //    None => {
+        //        let v = (self.calculation)(arg);    // accepts user supplied val
+        //        self.value = Some(v);
+        //        v
+        //    }
+        //}
     }
 }
 
