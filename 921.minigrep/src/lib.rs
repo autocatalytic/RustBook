@@ -5,7 +5,7 @@ use std::env;
 pub struct Config {
     pub query: String,
     pub filename: String,
-    pub case_sensitive: bool,
+    pub case_sensitive: bool,   // extend to handle case sensitivity
 }
 
 impl Config {
