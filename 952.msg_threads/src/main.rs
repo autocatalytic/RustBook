@@ -38,7 +38,7 @@ use std::thread;
 //     let (tx, rx) = mpsc::channel();
 
 //     // "move" is used before the parameters list of the closure to move tx
-//     // into the closure so the spawned thread ownes tx. The spawned thread 
+//     // into the closure so the spawned thread owns tx. The spawned thread 
 //     // needs to own the transmitting end of the channel to send messages
 //     // through it. Otherwise rust infers that it should borrow them. 
 //     //
@@ -71,7 +71,7 @@ use std::time::Duration;
 //     let (tx, rx) = mpsc::channel();
 
 //     // "move" is used before the parameters list of the closure to move tx
-//     // into the closure so the spawned thread ownes tx. The spawned thread 
+//     // into the closure so the spawned thread owns tx. The spawned thread 
 //     // needs to own the transmitting end of the channel to send messages
 //     // through it. Otherwise rust infers that it should borrow them. 
 //     //
