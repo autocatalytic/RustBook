@@ -25,5 +25,9 @@ fn main() {
 
     println!("collection average: {:?}", collection.average);
 
-//    println!("Hello, world!");
+//    let screen = Screen {
+//        components: vec![Box::new(String::from("Hi"))],
+//    };
+//
+//    screen.run();
 }
