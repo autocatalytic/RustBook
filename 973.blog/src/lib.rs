@@ -17,15 +17,19 @@
 //
 
 pub struct Post {
-    state: Option<Box<dyn State>>,  // Option because using take() below,
+//    state: Option<Box<dyn State>>,  // Option because using take() below,
     content: String,                // which sets this to empty at first
 }
 
+pub struct DraftPost {
+    content: String,
+}
+
 impl Post {
-    pub fn new() -> Post {
+    pub fn new() -> DraftPost {
         // A post starts in the draft state, private ensures it
-        Post {
-            state: Some(Box::new(Draft {})), 
+        DraftPost {
+            // state: Some(Box::new(Draft {})), 
             content: String::new(),
         }
     }
@@ -36,24 +40,57 @@ impl Post {
     }
 
     pub fn content(&self) -> &str {
-        self.state.as_ref().unwrap().content(self)
+        // self.state.as_ref().unwrap().content(self)
+        &self.content
     }
     
-    pub fn request_review(&mut self) {
-        if let Some(s) = self.state.take() {
-            self.state = Some(s.request_review())
-        }
-    }
-
-    pub fn approve(&mut self) {
-        if let Some(s) = self.state.take() {
-            self.state = Some(s.approve())
-        }
-    }
+//    pub fn request_review(&mut self) {
+//        if let Some(s) = self.state.take() {
+//            self.state = Some(s.request_review())
+//        }
+//    }
+//
+//    // Add a reject method, changing PendingReview back to Draft
+//    pub fn reject(&mut self) {
+//        if let Some(s) = self.state.take() {
+//            self.state = Some(Box::new(Draft {}))
+//        }
+//    }
+//
+//    pub fn approve(&mut self) {
+//        if let Some(s) = self.state.take() {
+//            self.state = Some(s.approve())
+//        }
+//    }
 
 }
 
-// defines behavior shared by different post states, and the Draft
+impl DraftPost {
+    pub fn add_text(&mut self, text: &str) {
+        self.content.push_str(text);
+    }
+
+    pub fn request_review(self) -> PendingReviewPost {
+        PendingReviewPost {
+            content: self.content,
+        }
+    }
+}
+
+pub struct PendingReviewPost {
+    content: String,
+}
+
+impl PendingReviewPost {
+    pub fn approve(self) -> Post {
+        Post { 
+            content: self.content 
+        }
+    }
+}
+
+
+// defines behavior shared by different post states
 trait State {
     // all types that implement State trait will now need to implement
     fn request_review(self: Box<Self>) -> Box<dyn State>;
@@ -65,8 +102,19 @@ trait State {
     fn content<'a>(&self, post: &'a Post) -> &'a str {
         ""
     }
+
 }
 
+
+// This part is cool, because we don't have to run multiple checks on the
+// state in different places. With the state pattern, we only need to add a 
+// new sturct and impl the trait methods on that struct to add states.
+//
+// A downside is that state methods implement transitions between states,
+// which means some states are coupled together. So if we want to add
+// another state between, say, PendingReview and Published, we'd have to
+// change code. This could be addressed with a database of states I think?
+//
 struct Draft {}
 
 impl State for Draft {
