@@ -7,9 +7,14 @@
 
 // Using the state pattern means when business requirements of the program
 // change, we won't need to change the code of the value holding the state
-// or the code that uses the value. We'll only need to update the code 
-// inside one of the state objects to change its rules or perhaps add 
-// more state objects. At least ideally.
+// or the code that uses the value. 
+//
+// This strikes me as different from the use in games or blockchains
+// where the "state" reflects memorization of data and conditions. In this 
+// definition here, it's more of an API (or integration) state. Although
+// in this assignment the state refers to whether our posts have been
+// published or not, so maybe it is the memory/condition idea.
+//
 
 pub struct Post {
     state: Option<Box<dyn State>>,  // Option because using take() below,
