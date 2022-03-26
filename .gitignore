@@ -73,6 +73,6 @@
 991.advanced/Cargo.lock
 995.hello_macro/target
 995.hello_macro/Cargo.lock
-hello/target
-hello/Cargo.lock
+hello_website/target
+hello_website/Cargo.lock
 scratch
